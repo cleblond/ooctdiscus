@@ -25,10 +25,21 @@ class Tdiscus {
         echo('<link href="'.self::toolRoot().'/static/coursera.css" rel="stylesheet">'."\n");
     }
 
+/*
     public static function footerStart() {
         global $OUTPUT;
         $OUTPUT->footerStart();
         self::load_ckeditor();
+        echo('<script>$(document).ready(function() { jQuery("time.timeago").timeago(); });</script>'."\n");
+    }
+*/    
+    
+    public static function footerStart() {
+        global $OUTPUT;
+        $OUTPUT->footerStart();
+        //self::load_ckeditor();
+        self::load_tinymce();
+        self::load_tinymce_config();
         echo('<script>$(document).ready(function() { jQuery("time.timeago").timeago(); });</script>'."\n");
     }
 
@@ -41,6 +52,17 @@ class Tdiscus {
         global $CFG;
         echo('<script src="'.$CFG->staticroot.'/util/ckeditor_4.8.0/ckeditor.js"></script>'."\n");
     }
+    
+    public static function load_tinymce() {
+        global $CFG;
+        echo('<script src="'.$CFG->wwwroot.'/mod/tdiscus/util/tinymce/js/tinymce/tinymce.min.js"></script>'."\n");
+    }
+    
+    public static function load_tinymce_config() {
+        global $CFG;
+        echo('<script src="'.$CFG->wwwroot.'/mod/tdiscus/util/tinymce/js/tinymce/tdiscus_tinymce.js"></script>'."\n");
+    }
+    
 
     public static function search_box($sortby=false) {
         $searchvalue = U::get($_GET,'search') ? 'value="'.htmlentities(U::get($_GET,'search')).'" ' : "";

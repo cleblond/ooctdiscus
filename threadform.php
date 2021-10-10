@@ -12,8 +12,12 @@ use \Tdiscus\Threads;
 // No parameter means we require CONTEXT, USER, and LINK
 $LAUNCH = LTIX::requireData();
 
-$config = HTMLPurifier_Config::createDefault();
-$purifier = new HTMLPurifier($config);
+//$config = HTMLPurifier_Config::createDefault();
+//$purifier = new HTMLPurifier($config);
+
+require_once 'util/htmlpurifier_library/HTMLPurifier.auto.php';
+
+
 
 $THREADS = new Threads();
 $rest_path = U::rest_path();
@@ -32,8 +36,9 @@ if ( isset($rest_path->action) && is_numeric($rest_path->action) ) {
     }
     $come_back .= '/' . $thread_id;
 }
-
+    //var_dump($_POST);
 if ( count($_POST) > 0 ) {
+
     if ( $old_thread ) {
         $retval = $THREADS->threadUpdate($thread_id, $_POST);
         if ( is_string($retval) ) {
@@ -98,10 +103,14 @@ onclick='window.location.href="<?= addSession($TOOL_ROOT) ?>";return false;'
 
 Tdiscus::footerStart();
 ?>
+
+
+<!--
 <script>
 $(document).ready( function () {
     CKEDITOR.replace( 'editor' );
 });
 </script>
+-->
 <?php
 Tdiscus::footerEnd();

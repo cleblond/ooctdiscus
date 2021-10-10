@@ -12,9 +12,9 @@ use \Tdiscus\Threads;
 // No parameter means we require CONTEXT, USER, and LINK
 $LAUNCH = LTIX::requireData();
 
-$config = HTMLPurifier_Config::createDefault();
-$purifier = new HTMLPurifier($config);
-
+//$config = HTMLPurifier_Config::createDefault();
+//$purifier = new HTMLPurifier($config);
+require_once 'util/htmlpurifier_library/HTMLPurifier.auto.php';
 
 $THREADS = new Threads();
 

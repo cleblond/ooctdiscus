@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+
+    <div id="chemdoodle_div">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <link rel="stylesheet" href="../../../../../question_type/chemdoodle/chemdoodle/ChemDoodleWeb.css" type="text/css">
+        <script type="text/javascript" src="../../../../../question_type/chemdoodle/chemdoodle/ChemDoodleWeb.js"></script>
+        <!-- <link rel="stylesheet" href="../../../../../css/eocustom.css" type="text/css"> -->
+        <link rel="stylesheet" href="../../../../../question_type/chemdoodle/chemdoodle/uis/jquery-ui-1.11.4.css" type="text/css">
+        <script type="text/javascript" src="../../../../../question_type/chemdoodle/chemdoodle/uis/ChemDoodleWeb-uis.js"></script>
+        <script type="text/javascript" src="../../../../../js/jquery-3.1.1.min.js"></script>
+
+
+        <script>
+          ChemDoodle.ELEMENT['H'].jmolColor = 'black';
+          ChemDoodle.ELEMENT['S'].jmolColor = '#B9A130';
+          var tinymce_sketcher = new ChemDoodle.SketcherCanvas('tinymce_sketcher', 750, 500,{useServices:false});
+
+
+          var hhs = new ChemDoodle.uis.gui.desktop.Button('implicit-explicit','iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QYGDwg2t9iQVwAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAFiSURBVDjL7dS9S5ZhFAbw3/v20KdKoi1FKkEJEqh/gRI0BUFDS40VNOigQ/gX1OwSOLQILS26RENbEpGQEDk1tQYOfZFvvb7qcik3Dw2Gqxc8PJxzn4/7Oufi5giHxbGaXeEc+nEWp/AXnZwfxyW00C7yTmAosfu4iBm8xId8r/EYfYm5gjVM1i4ygreYaMZxAQt4gpM5fIMNzOJ84s5gPCxK9GAMfVVo3Md1PMLzFNpBN57iSxK3sVWjK3YbnSpzuoelJP8pAn9gpZbcTE4jDTfRFZssYAdzB1jiaGI38RO/8v8d/82qCN76D3Us42OhggE82JNJJ9QuH7BYG4t4Vfiu4jYazVz/Be7iRpZU6nQwOqvPsMTp+FUR6TyupfAzvM8IBjCVRusZfKNcQK1RY2+G67iDadzCw/g38AnfYnfCqPWPMbTQrnfqxjB6Y3/H56JgT5i8w9easCewevSaHR67c8FNbvJZzUsAAAAASUVORK5CYII=', 'Implicit H');
+          $( hhs.getSource('hhs') ).insertAfter( "#tinymce_sketcher_button_save" );
+          hhs.getElement('hhs');
+          hhs.setup();
+          hhs.enable();
+
+
+          var deut_btn = new ChemDoodle.uis.gui.desktop.Button('tinymce_sketcher_button_label_d', 'iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QkFEhIMReK7IgAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAACGSURBVDjL7dO9CQIBDIbhB38W0EJQR3AMawe46jbRYdzDyi3EUhsLO8XitIlgYXUX8Yp7IaT44CWQhI5f8YyqcMMZe2wwbSKEAeYoccQVqybCT0Y44I5FhhCKyLZZwklkpyzhMLLHt7BXY2Hj6Jcs4TL6rjVb7mOWdYdVTPP+lHXdT+n4Iy9Jkiu8i5wY3AAAAABJRU5ErkJggg==', 'Deuterium', function() {
+			tinymce_sketcher.stateManager.setState(tinymce_sketcher.stateManager.STATE_LABEL);
+			tinymce_sketcher.stateManager.STATE_LABEL.label = 'D';
+			});
+
+	         $( deut_btn.getSource('deut_btn') ).insertAfter( "#tinymce_sketcher_button_label_h_label" );
+	          deut_btn.setup();
+              deut_btn.enable();
+
+          tinymce_sketcher.specs.bondLength_2D = 25;
+          tinymce_sketcher.specs.atoms_displayTerminalCarbonLabels_2D = true;
+          tinymce_sketcher.specs.atoms_useJMOLColors = true;
+          tinymce_sketcher.specs.bonds_clearOverlaps_2D = true;
+          tinymce_sketcher.specs.shapes_color = '#c10000';
+          tinymce_sketcher.repaint();
+          $(document).ready(function(){
+          $( "#eoinsert" ).click(function() {
+;
+               var args = parent.tinymce.activeEditor.windowManager.getParams();
+               var folder = args.folder;
+               var url = args.url;
+
+               var canvas = document.getElementById('tinymce_sketcher');
+               var context = canvas.getContext("2d");
+               var data = context.getImageData(0, 0, canvas.width, canvas.height);
+               var compositeOperation = context.globalCompositeOperation;
+               var tempCanvas = document.createElement("canvas"),
+                   tCtx = tempCanvas.getContext("2d");
+               tempCanvas.width = 650;
+               tempCanvas.height = 400;
+               tCtx.drawImage(canvas,0,0);
+
+               var tempimg =  tCtx.getImageData(0,0,650,400);
+               var tempimgdata = tempimg.data;
+               length = tempimgdata.length;
+               for(var i=3; i < length; i+=4){
+                   if (tempimgdata[i-1] == 255 && tempimgdata[i-2] == 255 && tempimgdata[i-3] == 255) {
+                       tempimgdata[i] = 0;
+                   }
+               }
+               tempimg.data = tempimgdata;
+               tCtx.putImageData(tempimg, 0, 0);
+               var cropimg = cropImageFromCanvas(tCtx, tempCanvas);
+
+                var imgfname = new Date().valueOf();
+                imgfname = 'img'+imgfname+'.png';
+                $.ajax({
+                      type: "POST",
+                      url: url,
+                      data: {
+                         imgBase64: cropimg,
+                         fname: imgfname
+                      }
+                    }).done(function(o) {
+                      //console.log('saved');
+
+
+
+                    var img = new Image();
+                    img.src = window.location.origin +'/tsugi/mod/openochem/uploads/'+folder+'/'+imgfname;
+
+
+                    parent.tinymce.activeEditor.insertContent(img.outerHTML);
+                    parent.tinymce.activeEditor.windowManager.close();
+
+                    });
+
+               function cropImageFromCanvas(ctx, canvas) {
+
+                        var w = canvas.width,
+                        h = canvas.height,
+                        pix = {x:[], y:[]},
+                        imageData = ctx.getImageData(0,0,canvas.width,canvas.height),
+                        x, y, index;
+
+                        for (y = 0; y < h; y++) {
+                            for (x = 0; x < w; x++) {
+                                index = (y * w + x) * 4;
+                                if (imageData.data[index+3] > 0) {
+
+                                    pix.x.push(x);
+                                    pix.y.push(y);
+
+                                }
+                            }
+                        }
+                        pix.x.sort(function(a,b){return a-b});
+                        pix.y.sort(function(a,b){return a-b});
+                        var n = pix.x.length-1;
+
+                        w = pix.x[n] - pix.x[0];
+                        h = pix.y[n] - pix.y[0];
+                        var cut = ctx.getImageData(pix.x[0], pix.y[0], w+1, h+1);
+
+                        canvas.width = w+1;
+                        canvas.height = h+1;
+                        ctx.putImageData(cut, 0, 0);
+
+                        var image = canvas.toDataURL();
+
+                        return image;
+
+                }
+          });
+          });
+
+        </script>
+       <button id="eoinsert">INSERT</button>
+
+    </div>
+
+</body>
+</html>

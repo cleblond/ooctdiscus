@@ -77,10 +77,12 @@ onclick='window.location.href="<?= addSession($TOOL_ROOT) ?>";return false;'
 
 Tdiscus::footerStart();
 ?>
+<!--
 <script>
 $(document).ready( function () {
     CKEDITOR.replace( 'editor' );
 });
 </script>
+-->
 <?php
 Tdiscus::footerEnd();
