@@ -55,12 +55,12 @@ class Tdiscus {
     
     public static function load_tinymce() {
         global $CFG;
-        echo('<script src="'.$CFG->wwwroot.'/mod/tdiscus/util/tinymce/js/tinymce/tinymce.min.js"></script>'."\n");
+        echo('<script src="'.$CFG->wwwroot.'/mod/ooctdiscus/util/tinymce/js/tinymce/tinymce.min.js"></script>'."\n");
     }
     
     public static function load_tinymce_config() {
         global $CFG;
-        echo('<script src="'.$CFG->wwwroot.'/mod/tdiscus/util/tinymce/js/tinymce/tdiscus_tinymce.js"></script>'."\n");
+        echo('<script src="'.$CFG->wwwroot.'/mod/ooctdiscus/util/tinymce/js/tinymce/tdiscus_tinymce.js"></script>'."\n");
     }
     
 
@@ -98,6 +98,8 @@ foreach($sortby as $sort) {
 
     public static function renderComment($LAUNCH, $thread_id, $comment)
     {
+    
+        //var_dump($comment);
         $locked = $comment['locked'];
         $hidden = $comment['hidden'];
         $depth = $comment['depth'];
@@ -149,7 +151,7 @@ foreach($sortby as $sort) {
 */
 ?>
   <br/>
-  <div style="padding-left: 10px;<?= ($hidden ? ' text-decoration: line-through;' : '') ?>"><?= htmlentities($comment['comment']) ?></div>
+  <div style="padding-left: 10px;<?= ($hidden ? ' text-decoration: line-through;' : '') ?>"><?= $comment['comment'] ?></div>
   </p>
 <?php
         if ( Settings::linkGet('maxdepth') > 0 ) {

@@ -26,6 +26,24 @@
   
   
   <style>
+  
+      .MYBUTTON > .K-Pri-Glyph-Content
+    {
+      background-image: url(/tsugi/mod/openochem/images/create.png);
+    }
+    
+    .K-Chem-AttachedMarkerIaController-SingleElectron > .K-Pri-Glyph-Content
+    {
+      background-image: url(/tsugi/mod/openochem/images/singleElectron.gif);
+    }
+    
+    .fullscreenbtn > .K-Pri-Glyph-Content
+    {
+      background-image: url(/tsugi/mod/openochem/images/fullscreen_btn.svg);
+    }
+  
+  
+  
   #chemObjSetter {
   height: 400px;
 
@@ -75,32 +93,6 @@
           if (k == 'data-chem-obj') {
 
 
-            var molecule = chemObjSetter.getChemObj();
-
-            //attache the composer configs
-            /*
-            molecule.setRenderOptions(CurComposerRenderConfigs);
-            var testkjs = Kekule.IO.saveFormatData(molecule, 'Kekule-JSON');
-            console.log(testkjs);
-            */
-
-            if (typeof molecule.renderOptions === "undefined") {
-            molecule.renderOptions = {};
-            }
-            molecule.renderOptions.useAtomSpecifiedColor = true;
-            molecule.renderOptions.chargeMarkType = 3;
-
-             var kjs = Kekule.IO.saveFormatData(molecule, 'Kekule-JSON');
-
-             var resDiv = document.createElement('div');
-             resDiv.setAttribute('id', resid);
-             resDiv.setAttribute('style', 'display: none;');
-             resDiv.setAttribute('type', 'chemical/x-kekule-json');
-
-             var moleculetext = document.createTextNode(kjs);
-             resDiv.appendChild(moleculetext);
-
-             viewerDomElem.attr(k, 'url(#'+resid+')');
  
            } else if (k=='data-draw-options') {
                       //skip this one
@@ -118,22 +110,24 @@
                     
         }
 
+        /*
         if (chemObjSetter.getIs3D()) {
                     viewerDomElem.addClass('K-Chem-Viewer3D');
         } else {
                     viewerDomElem.addClass('K-Chem-Viewer2D');
         }
+        */
 
-        viewerDomElem.attr('data-predefined-setting', 'basic');
+        //viewerDomElem.attr('data-predefined-setting', 'basic');
         viewerDomElem.attr('alt', 'Question Image');
-        viewerDomElem.attr('data-uniqid', resid);
+        //viewerDomElem.attr('data-uniqid', resid);
 
         var tmp = document.createElement("div");
         tmp.appendChild(viewerDomElem.get(0));
         imghtml = tmp.innerHTML
 
         var dtmp = document.createElement("div");
-        dtmp.appendChild(resDiv);
+        //dtmp.appendChild(resDiv);
         divhtml = dtmp.innerHTML
 
         parent.tinymce.activeEditor.selection.setContent(imghtml+divhtml);
@@ -367,12 +361,13 @@
 
       chemObjSetter.setToolButtons([
        'openEditor', 'loadData', 'saveData', 'clearObjs', 'zoomIn', 'zoomOut', 'rotateLeft', 'rotateRight', 'reset',
-       {
+       /*{
         //'text': '2D->3D',  // button caption
         'text': '2D->3D', 'hint': 'Convert 2D to 3D', 'showText': true, 'showGlyph': false, 'cssText': 'width:auto',
         'id': 'btnGen',
         '#execute': generate3D  // event handler when executing the button
-      },
+      },*/
+      /*
       {
         'id': 'btnTerminate',
         'text': 'Terminate', 'hint': 'Terminate 2D/3D calculation', 'showText': true, 'showGlyph': false, 'cssText': 'width:auto',
@@ -384,7 +379,7 @@
       'hint': 'Copy IUPAC names to clipboard.',
       'showText': true,   // display caption of button
       '#execute': function(){ parseIupacName(); }  // event handler when executing the button
-      },
+      },*/
       {
       'text': 'Insert',  // button caption
       'htmlClass': 'K-Res-Button-YesOk',  // show a OK icon
@@ -404,105 +399,7 @@
 
     }
     
-    
-    
-    function init_old()
-    {
-    
-    //var chemObjSetter = new Kekule.ChemWidget.ChemObjInserter(document);
-    //chemObjSetter.setDimension('700px', '800px');
-    //chemObjSetter.appendToElem(document.getElementById('parent'));
-    
-    
-    
-     //var params = window.location.search;
-     chemObjSetter = Kekule.Widget.getWidgetById('chemObjSetter');
-     
-     console.log(chemObjSetter);
-     
-     chemObjSetter.setDimension('600px', '500px');
-
-     selElem = parent.tinymce.activeEditor.selection.getNode();
-     
-     if (selElem) {
-     chemObjSetter.importFromElem(selElem);
-       
-     } else {
-     
-     chemObjSetter.setChemObj(null);
-     }
-
-     
-
-     //set options for editor
-     
-     
-     var renderConfigs = new Kekule.Render.Render2DConfigs();
-     console.log(renderConfigs);
-     console.log(Kekule.Render.Render2DConfigs.getInstance());
-     renderConfigs.getColorConfigs().setUseAtomSpecifiedColor(true);
-     renderConfigs.getMoleculeDisplayConfigs().setDefChargeMarkType(3);
-     
-     //renderConfigs.getInteractionConfigs().setScrollToObjAfterLoading(false)
-
-     renderConfigs.getColorConfigs().setUseAtomSpecifiedColor(true);
-     
-     
-     //chemObjSetter.viewer.setEditorProperties({'renderConfigs': renderConfigs});
-     
-     
-
-     
-     
-
-     
-     //chemObjSetter.doResize();
-     
-
-     
-     
-     //composer.getEditorConfigs().getInteractionConfigs().setScrollToObjAfterLoading(false)
-     
-     //chemObjSetter.viewer.getEditorConfigs().getInteractionConfigs().setScrollToObjAfterLoading(false);
-     
-     
- //console.log(chemObjSetter);
-     
-     //set options for viewer
-     
-     var vrenderConfigs = chemObjSetter.viewer.getRenderConfigs();
-     vrenderConfigs.getColorConfigs().setUseAtomSpecifiedColor(true);
-     vrenderConfigs.getMoleculeDisplayConfigs().setDefChargeMarkType(3);
-     
-     
-     
-      chemObjSetter.setToolButtons([
-       'openEditor', 'loadData', 'saveData', 'clearObjs', 'zoomIn', 'zoomOut', 'rotateLeft', 'rotateRight', 'reset',
-       {
-        //'text': '2D->3D',  // button caption
-        'text': '2D->3D', 'hint': 'Convert 2D to 3D', 'showText': true, 'showGlyph': false, 'cssText': 'width:auto',
-        'id': 'btnGen',
-        '#execute': generate3D  // event handler when executing the button
-      },
-      {
-        'id': 'btnTerminate',
-        'text': 'Terminate', 'hint': 'Terminate 2D/3D calculation', 'showText': true, 'showGlyph': false, 'cssText': 'width:auto',
-        '#execute': terminate
-      },{
-      'text': 'Insert',  // button caption
-      'htmlClass': 'K-Res-Button-YesOk',  // show a OK icon
-      'hint': 'Insert Structure into Document',
-      'showText': true,   // display caption of button
-      '#execute': function(){ publish(); }  // event handler when executing the button
-    }
-
-    ]);
-   
-      btnGen = Kekule.Widget.getWidgetById('btnGen');
-      btnTerminate = Kekule.Widget.getWidgetById('btnTerminate');
-      btnTerminate.setEnabled(false);
-
-    }
+ 
     
     
     

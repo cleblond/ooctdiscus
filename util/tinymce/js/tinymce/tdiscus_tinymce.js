@@ -3,10 +3,10 @@
     images_dataimg_filter: function(img) {
         return img.hasAttribute('internal-blob');
       },
-      menubar:true,
+      menubar:false,
       statusbar: false,
       //entity_encoding : "raw",
-    selector: '#editor',
+    selector: 'textarea',
     current_session_id: $('#phpsessid').val(),
     browser_spellcheck: true,
     relative_urls: false,
@@ -27,7 +27,7 @@
 
 //toolbar: "undo redo | bold italic underline | fontsizeselect | superscript subscript | bullist numlist outdent indent | forecolor backcolor | link image responsivefilemanager | emoticons | formula | charmap | oockekule",
 
-  toolbar: 'insert | undo redo |  formatselect | bold italic backcolor | bullist numlist outdent indent | removeformat | formula oockekule',
+  toolbar: 'undo redo |  formatselect | bold italic backcolor | superscript subscript | bullist numlist outdent indent | removeformat | formula oockekule',
 
   removed_menuitems: "newdocument",
   font_formats: 'Arial=arial,helvetica,sans-serif;Courier New=courier new,courier,monospace;AkrutiKndPadmini=Akpdmi-n',
@@ -89,7 +89,7 @@
             + 'kbd,label[for],legend,noscript,optgroup[label|disabled],option[disabled|label|selected|value],'
             + 'q[cite],samp,select[disabled|multiple|name|size],small,a[href|target]',
 
-        extended_valid_elements:'@[type], script[language|type|src], img[src|style|width|height|data-kekule-widget|data-render-type|data-chem-obj|data-predefined-setting|data-auto-size|data-uniqid|class]',
+        extended_valid_elements:'@[type], img[src|style|width|height|data-kekule-widget|data-render-type|data-chem-obj|data-predefined-setting|data-auto-size|data-uniqid|class]',
 
         //external_filemanager_path:"/tsugi/mod/openochem/filemanager/",
         //filemanager_title:"Responsive Filemanager" ,

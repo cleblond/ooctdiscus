@@ -71,7 +71,7 @@ $OUTPUT->bodyStart();
 $OUTPUT->topNav($menu);
 $OUTPUT->flashMessages();
 ?>
-<div id="add-thread-div" title="<?= __("New Thread") ?>" >
+<div id="add-thread-div"><h2>Creating a new Thread!</h2>
 <form id="add-thread-form" method="post">
 <p><?= __("Title:") ?> <br/>
 <input type="text" name="title" class="form-control"
