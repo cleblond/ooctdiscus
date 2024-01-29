@@ -9,6 +9,12 @@ use \Tsugi\Core\Settings;
 use \Tdiscus\Tdiscus;
 use \Tdiscus\Threads;
 
+
+include("../openochem/notify_class.php");
+$notif = new Notify();
+
+
+
 // No parameter means we require CONTEXT, USER, and LINK
 $LAUNCH = LTIX::requireData();
 
@@ -36,14 +42,14 @@ if ( isset($rest_path->action) && is_numeric($rest_path->action) ) {
     }
     $come_back .= '/' . $thread_id;
 }
-    //var_dump($_POST);
+    var_dump($_POST);
 if ( count($_POST) > 0 ) {
 
     if ( $old_thread ) {
         $retval = $THREADS->threadUpdate($thread_id, $_POST);
         if ( is_string($retval) ) {
             $_SESSION['error'] = $retval;
-            header( 'Location: '.addSession($TOOL_ROOT . '/' . $come_back) ) ;
+            //header( 'Location: '.addSession($TOOL_ROOT . '/' . $come_back) ) ;
             return;
         }
 
@@ -53,13 +59,22 @@ if ( count($_POST) > 0 ) {
         $retval = $THREADS->threadInsert($_POST);
         if ( is_string($retval) ) {
             $_SESSION['error'] = $retval;
-            header( 'Location: '.addSession($TOOL_ROOT . '/' . $come_back) ) ;
+            //header( 'Location: '.addSession($TOOL_ROOT . '/' . $come_back) ) ;
             return;
         }
 
         $_SESSION['success'] = __('Thread added');
         header( 'Location: '.addSession($TOOL_ROOT) ) ;
     }
+    
+    $object_user_id = 6893; //cleblond account on learn
+    $user_id = 6893;
+    $object_id = 1;
+    $object = "newthread";
+    
+    $notif->email_user ($object_user_id, $user_id, $object_id, $object);
+    
+    
     return;
 }
 
