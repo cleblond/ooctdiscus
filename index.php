@@ -29,8 +29,8 @@ $comeback = $TOOL_ROOT.'/';
 // Does not include start
 $copyparms = array('search', 'sort', 'pagesize');
 foreach ( $copyparms as $parm ) {
-    $val = U::get($_GET, $parm);
-    if ( strlen($val) == 0 ) continue;
+    $val = U::get($_GET, $parm, "");
+    if ( $val && strlen($val) == 0 ) continue;
     $comeback = U::add_url_parm($comeback, $parm, $val);
 }
 
