@@ -30,7 +30,7 @@ $comeback = $TOOL_ROOT.'/';
 $copyparms = array('search', 'sort', 'pagesize');
 foreach ( $copyparms as $parm ) {
     $val = U::get($_GET, $parm, "");
-    if ( $val && strlen($val) == 0 ) continue;
+    if ( strlen($val) == 0 ) continue;
     $comeback = U::add_url_parm($comeback, $parm, $val);
 }
 
@@ -49,15 +49,21 @@ $OUTPUT->topNav($menu);
 
 $dicussion_title = strlen(Settings::linkget('title')) > 0 ? Settings::linkget('title') : $LAUNCH->link->title;
 
+if ( $LAUNCH->link->settingsGet('depth') < 1 ) $LAUNCH->link->settingsSet('depth', '2');
+
 echo('<div>');
-echo('<span class="tdiscus-threads-title">');
-echo('<a href="'.$comeback.'">');
-echo(htmlentities($dicussion_title));
-echo('</a></span>' );
-echo('<a style="float: right;" href="'.$TOOL_ROOT.'/threadform'.'">');
+
+echo('<a class="btn btn-success" href="'.$TOOL_ROOT.'/threadform'.'">');
 echo('<i class="fa fa-plus"></i> ');
-echo(__('Add Thread'));
+echo(__('Ask a Question'));
 echo('</a>');
+
+echo('<span >');
+//echo('<a href="'.$comeback.'">');
+//echo(htmlentities($dicussion_title));
+//echo('</a>');
+echo("     Note: This question will be viewed by all registered users");
+echo('</span>');
 echo("</div>\n");
 
 SettingsForm::start();
@@ -65,6 +71,7 @@ SettingsForm::text('title',__('Thread title override.'));
 // SettingsForm::checkbox('grade',__('Give a 100% grade for a student making a post or a comment.'));
 // SettingsForm::checkbox('studentthread',__('Allow learners to create a thread.'));
 SettingsForm::checkbox('commenttop',__('Put comment box before comments in thread display.'));
+SettingsForm::checkbox('privatethread',__('Private Thread - User threads are hidden from other users.'));
 // SettingsForm::number('lockminutes',__('Number of minutes before posts are locked.'));
 SettingsForm::number('maxdepth',__('Allowed depth of nested comments. Set to < 1 for no nested comments.'));
 SettingsForm::dueDate();

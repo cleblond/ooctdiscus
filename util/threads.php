@@ -29,6 +29,7 @@ class Threads {
             WHERE link_id = :LID AND thread_id = :TID",
             array(':LID' => $TSUGI_LAUNCH->link->id,  ':UID' => $TSUGI_LAUNCH->user->id, ':TID' => $thread_id)
         );
+        
         return $row;
     }
 
@@ -209,13 +210,41 @@ class Threads {
             UT.subscribe AS subscribe, UT.favorite AS favorite
         ";
 
-        $from = "
-            FROM {$CFG->dbprefix}tdiscus_thread AS T
-            JOIN {$CFG->dbprefix}lti_user AS U ON  U.user_id = T.user_id
-            LEFT JOIN {$CFG->dbprefix}tdiscus_user_thread AS UT ON T.thread_id = UT.thread_id AND UT.user_id = :UID
-            WHERE link_id = :LID $whereclause
-            ORDER BY UT.favorite DESC, T.pin DESC, T.rank_value DESC, $order_by
-        ";
+       
+       if ( ! $TSUGI_LAUNCH->user->instructor ) {
+        
+        
+            if ( Settings::linkGet('privatethread') ) {
+                $uid = $TSUGI_LAUNCH->user->id;
+                $usrwhere = "AND T.user_id = $uid";
+            } else {
+            
+                $usrwhere = '';
+            }
+            
+
+            $from = "
+                FROM {$CFG->dbprefix}tdiscus_thread AS T
+                JOIN {$CFG->dbprefix}lti_user AS U ON  U.user_id = T.user_id
+                LEFT JOIN {$CFG->dbprefix}tdiscus_user_thread AS UT ON T.thread_id = UT.thread_id AND UT.user_id = :UID
+                WHERE link_id = :LID $usrwhere $whereclause
+                ORDER BY UT.favorite DESC, T.pin DESC, T.rank_value DESC, $order_by
+            ";
+        
+        } else {
+        
+        
+            $from = "
+                FROM {$CFG->dbprefix}tdiscus_thread AS T
+                JOIN {$CFG->dbprefix}lti_user AS U ON  U.user_id = T.user_id
+                LEFT JOIN {$CFG->dbprefix}tdiscus_user_thread AS UT ON T.thread_id = UT.thread_id AND UT.user_id = :UID
+                WHERE link_id = :LID $whereclause
+                ORDER BY UT.favorite DESC, T.pin DESC, T.rank_value DESC, $order_by
+            ";
+        
+        }
+
+
 
         return self::pagedQuery($fields, $from, $subst, $info);
     }
@@ -224,7 +253,7 @@ class Threads {
     public static function pagedQuery($fields, $from, $vars, $info=false)
     {
         global $PDOX;
-
+        //echo $from;
         $retval = new \stdClass();
         $retval->more = false;
         $retval->next = -1;
@@ -261,6 +290,7 @@ class Threads {
             $retval->back = $start - $pagesize;
             $retval->next = $start + $pagesize;
         }
+        
         $retval->rows = $rows;
 
         return $retval;

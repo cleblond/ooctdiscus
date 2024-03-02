@@ -42,7 +42,6 @@ if ( isset($rest_path->action) && is_numeric($rest_path->action) ) {
     }
     $come_back .= '/' . $thread_id;
 }
-    var_dump($_POST);
 if ( count($_POST) > 0 ) {
 
     if ( $old_thread ) {
@@ -53,7 +52,7 @@ if ( count($_POST) > 0 ) {
             return;
         }
 
-        $_SESSION['success'] = __('Thread updated');
+        $_SESSION['success'] = __('Question updated');
         header( 'Location: '.addSession($TOOL_ROOT) ) ;
     } else {
         $retval = $THREADS->threadInsert($_POST);
@@ -63,7 +62,7 @@ if ( count($_POST) > 0 ) {
             return;
         }
 
-        $_SESSION['success'] = __('Thread added');
+        $_SESSION['success'] = __('Question added');
         header( 'Location: '.addSession($TOOL_ROOT) ) ;
     }
     
@@ -86,7 +85,7 @@ $OUTPUT->bodyStart();
 $OUTPUT->topNav($menu);
 $OUTPUT->flashMessages();
 ?>
-<div id="add-thread-div"><h2>Creating a new Thread!</h2>
+<div id="add-thread-div"><h2>Creating a new Question!</h2>
 <form id="add-thread-form" method="post">
 <p><?= __("Title:") ?> <br/>
 <input type="text" name="title" class="form-control"
@@ -107,7 +106,7 @@ if ( $old_thread ) {
 </textarea>
 </p>
 <p>
-<input type="submit" id="add-thread-submit" value="<?= ($old_thread ? __('Update') : __('+ Thread')) ?>" >
+<input type="submit" id="add-thread-submit" value="<?= ($old_thread ? __('Update') : __('+ Question')) ?>" >
 <input type="submit" id="add-thread-cancel" value="<?= __('Cancel') ?>"
 onclick='window.location.href="<?= addSession($TOOL_ROOT) ?>";return false;'
 >
