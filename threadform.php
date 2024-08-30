@@ -10,10 +10,11 @@ use \Tdiscus\Tdiscus;
 use \Tdiscus\Threads;
 
 
-include("../openochem/notify_class.php");
+include("notify_class.php");
 $notif = new Notify();
 
-
+require_once("../openochem/key_acl_class.php");
+$key = new KeyAcl();
 
 // No parameter means we require CONTEXT, USER, and LINK
 $LAUNCH = LTIX::requireData();
@@ -61,17 +62,22 @@ if ( count($_POST) > 0 ) {
             //header( 'Location: '.addSession($TOOL_ROOT . '/' . $come_back) ) ;
             return;
         }
-
+        
+        
+           $object_user_id = 6893; //cleblond account on learn
+           $user_id = 6893;
+           $object_id = 1;
+           $object = "newthread";
+        
+        
+        $notif->email_user ($object_user_id, $user_id, $object_id, $object);
         $_SESSION['success'] = __('Question added');
         header( 'Location: '.addSession($TOOL_ROOT) ) ;
     }
     
-    $object_user_id = 6893; //cleblond account on learn
-    $user_id = 6893;
-    $object_id = 1;
-    $object = "newthread";
+
     
-    $notif->email_user ($object_user_id, $user_id, $object_id, $object);
+    
     
     
     return;
@@ -84,6 +90,14 @@ $menu = false;
 $OUTPUT->bodyStart();
 $OUTPUT->topNav($menu);
 $OUTPUT->flashMessages();
+
+if ($key->has_tier('student_pays', $_SESSION['lti']['key_id']) && !$key->student_paid($USER->id))  {
+
+		echo  $key->getAdCopy($USER->id);
+    
+}
+
+
 ?>
 <div id="add-thread-div"><h2>Creating a new Question!</h2>
 <form id="add-thread-form" method="post">
